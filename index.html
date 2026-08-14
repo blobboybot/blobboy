@@ -1,0 +1,3532 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Star Boy ⭐</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #4b4054;
+    background: linear-gradient(to bottom, #83cfd1 0%, #c8e5df 55%, #f1e6d9 100%);
+    transition: background 4s ease;
+}
+
+
+/* =========================================================
+   RED MODE
+========================================================= */
+
+#redFilter {
+    position: fixed;
+    inset: 0;
+    background: rgba(130, 0, 20, 0.42);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1000;
+    transition: opacity 1.5s ease;
+    mix-blend-mode: multiply;
+}
+
+body.red-mode #redFilter {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+.clock {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 100;
+}
+
+.date {
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.time {
+    margin-top: 4px;
+    font-size: 15px;
+    opacity: 0.72;
+}
+
+body.night-mode .clock,
+body.sleep-mode .clock {
+    color: #d0c6da;
+}
+
+
+/* =========================================================
+   MENU BUTTON
+========================================================= */
+
+.menu-button {
+    position: fixed;
+
+    right: 28px;
+    top: 28px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.72);
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 8px 25px rgba(50,25,60,0.15);
+
+    cursor: pointer;
+
+    font-size: 22px;
+
+    z-index: 300;
+
+    transition:
+        transform 0.25s ease,
+        background 0.3s ease;
+}
+
+.menu-button:hover {
+    transform: scale(1.08);
+}
+
+.menu-button.active {
+    background: rgba(255,255,255,0.9);
+}
+
+body.night-mode .menu-button,
+body.sleep-mode .menu-button {
+    background: rgba(40,35,55,0.8);
+}
+
+
+/* =========================================================
+   CONTROL PANEL
+========================================================= */
+
+.controls {
+    position: fixed;
+
+    top: 86px;
+    right: 28px;
+
+    width: 245px;
+
+    padding: 18px;
+
+    background: rgba(255,255,255,0.68);
+
+    backdrop-filter: blur(18px);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 45px rgba(50,25,60,0.18);
+
+    z-index: 250;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform:
+        translateY(-10px)
+        scale(0.97);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.controls.open {
+    opacity: 1;
+    pointer-events: auto;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+body.night-mode .controls,
+body.sleep-mode .controls {
+    background: rgba(35,30,50,0.78);
+    color: #eee7f2;
+}
+
+.controls-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-bottom: 14px;
+}
+
+.pin-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    opacity: 0.55;
+}
+
+.pin-button.active {
+    opacity: 1;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 9px;
+}
+
+.input-row label {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.input-row input {
+    width: 72px;
+    height: 30px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: white;
+
+    text-align: center;
+    outline: none;
+}
+
+.control-button {
+    width: 100%;
+    height: 34px;
+
+    margin-top: 5px;
+
+    border: none;
+    border-radius: 10px;
+
+    color: white;
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.3s ease;
+}
+
+.control-button:active {
+    transform: scale(0.96);
+}
+
+.update-button {
+    background: #b76bb3;
+}
+
+.sleep-button {
+    background: #625978;
+}
+
+.sleep-button.active {
+    background: #9b5b73;
+}
+
+.red-button {
+    background: #8e5963;
+}
+
+.red-button.active {
+    background: #c63d4d;
+}
+
+.schedule-open {
+    background: #7d7090;
+}
+
+.vibe {
+    min-height: 17px;
+
+    margin-top: 10px;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    opacity: 0.72;
+}
+
+
+/* =========================================================
+   LIGHT COLOR PANEL
+========================================================= */
+
+.light-controls {
+    margin-top: 12px;
+
+    padding-top: 12px;
+
+    border-top:
+        1px solid
+        rgba(80,60,90,0.12);
+}
+
+.light-title {
+    font-size: 12px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+.light-options {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.light-color {
+    width: 27px;
+    height: 27px;
+
+    border-radius: 50%;
+
+    border: 2px solid rgba(255,255,255,0.8);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 2px 6px
+        rgba(40,20,50,0.18);
+
+    transition:
+        transform 0.2s ease;
+}
+
+.light-color:hover {
+    transform: scale(1.15);
+}
+
+.light-color.selected {
+    outline:
+        2px solid
+        #6f5879;
+
+    outline-offset:
+        2px;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message {
+    position: fixed;
+
+    left: 50%;
+    bottom: 45px;
+
+    transform: translateX(-50%);
+
+    min-width: 220px;
+    max-width: 420px;
+
+    padding: 12px 18px;
+
+    background: rgba(255,255,255,0.65);
+
+    backdrop-filter: blur(12px);
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 200;
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+}
+
+.message.show {
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(-5px);
+}
+
+
+/* =========================================================
+   CEILING LIGHT
+========================================================= */
+
+.ceiling-light {
+    position: fixed;
+
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 110px;
+    height: 125px;
+
+    z-index: 5;
+
+    cursor: pointer;
+}
+
+.ceiling-wire {
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 3px;
+    height: 38px;
+
+    transform: translateX(-50%);
+
+    background: #5f5960;
+}
+
+.ceiling-fixture {
+    position: absolute;
+
+    top: 34px;
+    left: 50%;
+
+    width: 38px;
+    height: 22px;
+
+    transform: translateX(-50%);
+
+    background: #67616a;
+
+    border-radius:
+        8px 8px 4px 4px;
+}
+
+.bulb {
+    position: absolute;
+
+    top: 48px;
+    left: 50%;
+
+    width: 48px;
+    height: 48px;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: #fff3cf;
+
+    box-shadow:
+        0 0 45px
+        rgba(255,225,150,0.65);
+
+    transition:
+        background 0.6s ease,
+        box-shadow 0.6s ease;
+}
+
+.bulb-glow {
+    position: fixed;
+
+    top: 35px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,230,160,0.15),
+            transparent 70%
+        );
+
+    pointer-events: none;
+
+    z-index: 1;
+
+    transition:
+        background 0.8s ease;
+}
+
+
+/* =========================================================
+   STAR
+========================================================= */
+
+.star {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 285px;
+    height: 285px;
+
+    transform:
+        translate(-50%, -50%);
+
+    cursor: pointer;
+
+    z-index: 10;
+
+    transition:
+        width 1.2s ease,
+        height 1.2s ease,
+        top 1.2s ease;
+
+    filter:
+        drop-shadow(
+            0 18px 25px
+            rgba(70,35,80,0.15)
+        );
+}
+
+.star-body {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e29bd6,
+            #bb70ba
+        );
+
+    clip-path:
+        polygon(
+            50% 2%,
+            61% 36%,
+            98% 36%,
+            68% 57%,
+            80% 93%,
+            50% 71%,
+            20% 93%,
+            32% 57%,
+            2% 36%,
+            39% 36%
+        );
+
+    transition:
+        background 1.2s ease,
+        transform 1.2s ease;
+}
+
+
+/* =========================================================
+   READINESS VISCOSITY
+========================================================= */
+
+.star.ready-medium .star-body {
+    transform:
+        rotate(2deg)
+        scaleY(0.98);
+}
+
+.star.ready-low .star-body {
+    transform:
+        rotate(5deg)
+        scaleY(0.90);
+}
+
+.star.ready-very-low .star-body {
+    transform:
+        rotate(9deg)
+        scaleY(0.78)
+        translateY(22px);
+}
+
+
+/* =========================================================
+   FACE
+========================================================= */
+
+.face {
+    position: absolute;
+    inset: 0;
+}
+
+
+/* =========================================================
+   EYES
+========================================================= */
+
+.eye {
+    position: absolute;
+
+    width: 75px;
+    height: 84px;
+
+    top: 68px;
+
+    background: #fffaf5;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    z-index: 20;
+
+    transition:
+        height 0.7s ease,
+        filter 0.7s ease;
+}
+
+.left-eye {
+    left: 54px;
+}
+
+.right-eye {
+    right: 54px;
+}
+
+.iris {
+    position: absolute;
+
+    width: 46px;
+    height: 46px;
+
+    left: 50%;
+    top: 51%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #111 0%,
+            #111 17%,
+            #614629 20%,
+            #94733e 43%,
+            #78905b 62%,
+            #4c7149 80%,
+            #263a2a 100%
+        );
+
+    transition:
+        transform 0.25s ease,
+        filter 0.7s ease;
+}
+
+.pupil {
+    position: absolute;
+
+    width: 17px;
+    height: 17px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: #111;
+}
+
+.pupil::after {
+    content: "";
+
+    position: absolute;
+
+    width: 6px;
+    height: 6px;
+
+    left: 3px;
+    top: 2px;
+
+    background: white;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   EYELIDS
+========================================================= */
+
+.eyelid {
+    position: absolute;
+
+    left: -18px;
+    top: -58px;
+
+    width: 110px;
+    height: 75px;
+
+    background: #e29bd6;
+
+    border-radius: 50%;
+
+    z-index: 21;
+
+    transition:
+        top 0.7s ease,
+        background 1s ease;
+}
+
+.star.sleep-tired .eye {
+    height: 68px;
+    filter: saturate(0.75);
+}
+
+.star.sleep-tired .eyelid {
+    top: -38px;
+}
+
+.star.sleep-very-tired .eye {
+    height: 55px;
+    background: #ffe8e4;
+    filter: saturate(0.7);
+}
+
+.star.sleep-very-tired .eyelid {
+    top: -23px;
+}
+
+
+/* =========================================================
+   BROWS
+========================================================= */
+
+.brow {
+    position: absolute;
+
+    width: 42px;
+    height: 8px;
+
+    top: 55px;
+
+    background: #684865;
+
+    border-radius: 50%;
+
+    z-index: 30;
+}
+
+.left-brow {
+    left: 62px;
+    transform: rotate(-7deg);
+}
+
+.right-brow {
+    right: 62px;
+    transform: rotate(7deg);
+}
+
+
+/* =========================================================
+   MOUTH
+========================================================= */
+
+.mouth {
+    position: absolute;
+
+    left: 50%;
+    top: 145px;
+
+    transform:
+        translateX(-50%);
+
+    width: 28px;
+    height: 13px;
+
+    z-index: 31;
+
+    transition:
+        all 0.3s ease;
+}
+
+.mouth-normal {
+    border-bottom:
+        3px solid #493447;
+
+    border-radius:
+        0 0 50% 50%;
+}
+
+.mouth-happy {
+    width: 32px;
+    height: 15px;
+
+    border-bottom:
+        4px solid #493447;
+
+    border-radius:
+        0 0 50% 50%;
+}
+
+.mouth-laughing {
+    width: 29px;
+    height: 19px;
+
+    background: #493447;
+
+    border-radius:
+        50% 50% 55% 55%;
+}
+
+.mouth-laughing::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 2px;
+
+    width: 14px;
+    height: 5px;
+
+    transform:
+        translateX(-50%);
+
+    background: #e99ba4;
+
+    border-radius: 50%;
+}
+
+.mouth-shocked {
+    width: 15px;
+    height: 18px;
+
+    border:
+        3px solid #493447;
+
+    border-radius: 50%;
+}
+
+.mouth-sleepy {
+    width: 22px;
+    height: 3px;
+
+    background: #493447;
+
+    border-radius: 50%;
+}
+
+.mouth-sad {
+    width: 25px;
+    height: 12px;
+
+    border-top:
+        3px solid #493447;
+
+    border-radius:
+        50% 50% 0 0;
+}
+
+.mouth-curious {
+    width: 22px;
+    height: 5px;
+
+    border-bottom:
+        2px solid #493447;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   PEARLS
+========================================================= */
+
+.pearl-necklace {
+    position: absolute;
+
+    left: 50%;
+    top: 170px;
+
+    transform:
+        translateX(-50%);
+
+    width: 72px;
+    height: 30px;
+
+    z-index: 29;
+
+    opacity: 0;
+
+    transition:
+        opacity 0.8s ease;
+}
+
+.pearl {
+    position: absolute;
+
+    width: 11px;
+    height: 11px;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            #ffffff,
+            #f5e9ed 45%,
+            #d8c4ce 100%
+        );
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 1px 3px
+        rgba(60,30,60,0.25);
+}
+
+.p1 { left: 5px; top: 2px; }
+.p2 { left: 16px; top: 9px; }
+.p3 { left: 29px; top: 14px; }
+.p4 { left: 42px; top: 9px; }
+.p5 { left: 54px; top: 2px; }
+.p6 {
+    left: 29px;
+    top: 25px;
+    transform: scale(0.82);
+}
+
+.star.pearl-mode .pearl-necklace {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   FRECKLES
+========================================================= */
+
+.freckle {
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    background: #9b635f;
+
+    border-radius: 50%;
+
+    opacity: 0.72;
+
+    z-index: 25;
+}
+
+.f1 { left: 82px; top: 154px; }
+.f2 { left: 94px; top: 161px; }
+.f3 { left: 72px; top: 166px; }
+.f4 { left: 105px; top: 150px; }
+
+.f5 { right: 82px; top: 154px; }
+.f6 { right: 94px; top: 161px; }
+.f7 { right: 72px; top: 166px; }
+.f8 { right: 105px; top: 150px; }
+
+
+/* =========================================================
+   BLINK
+========================================================= */
+
+.blinking .eye {
+    height: 18px !important;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.star:hover {
+    animation:
+        happyWiggle 1.8s ease-in-out infinite;
+}
+
+@keyframes happyWiggle {
+    0%, 100% {
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+
+    25% {
+        transform:
+            translate(-50%, -51%)
+            rotate(-2deg);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -49%)
+            rotate(2deg);
+    }
+
+    75% {
+        transform:
+            translate(-50%, -51%)
+            rotate(-1deg);
+    }
+}
+
+
+/* =========================================================
+   SLEEP
+========================================================= */
+
+body.sleep-mode {
+    background:
+        linear-gradient(
+            to bottom,
+            #18182f 0%,
+            #29233f 50%,
+            #10111f 100%
+        ) !important;
+}
+
+body.sleep-mode .star {
+    animation:
+        sleepyFloat 5s ease-in-out infinite;
+}
+
+body.sleep-mode .eye {
+    height: 8px !important;
+    background: #f1dddd;
+}
+
+body.sleep-mode .eyelid {
+    top: -3px !important;
+}
+
+@keyframes sleepyFloat {
+    0%, 100% {
+        transform:
+            translate(-50%, -50%);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -54%);
+    }
+}
+
+
+/* =========================================================
+   PLANT
+========================================================= */
+
+.plant {
+    position: absolute;
+
+    left:
+        calc(50% - 245px);
+
+    bottom:
+        calc(50% - 125px);
+
+    width: 110px;
+    height: 180px;
+
+    z-index: 3;
+}
+
+.pot {
+    position: absolute;
+
+    left: 27px;
+    bottom: 0;
+
+    width: 58px;
+    height: 42px;
+
+    background: #c58b69;
+
+    border-radius:
+        7px 7px 15px 15px;
+}
+
+.pot::before {
+    content: "";
+
+    position: absolute;
+
+    left: -4px;
+    top: -5px;
+
+    width: 66px;
+    height: 12px;
+
+    background: #a96f51;
+
+    border-radius: 50%;
+}
+
+.stem {
+    position: absolute;
+
+    left: 52px;
+    bottom: 35px;
+
+    width: 7px;
+    height: 35px;
+
+    background: #70a765;
+
+    border-radius: 10px;
+
+    transition:
+        height 1s ease;
+}
+
+.leaf {
+    position: absolute;
+
+    width: 34px;
+    height: 19px;
+
+    background: #7dbb72;
+
+    border-radius:
+        100% 0 100% 0;
+
+    opacity: 0;
+
+    transition:
+        opacity 1s ease;
+}
+
+.leaf.left {
+    left: 21px;
+    bottom: 73px;
+    transform: rotate(-28deg);
+}
+
+.leaf.right {
+    left: 55px;
+    bottom: 90px;
+    transform:
+        rotate(28deg)
+        scaleX(-1);
+}
+
+.leaf.top-left {
+    left: 28px;
+    bottom: 110px;
+    transform: rotate(-40deg);
+}
+
+.leaf.top-right {
+    left: 52px;
+    bottom: 120px;
+    transform:
+        rotate(40deg)
+        scaleX(-1);
+}
+
+.plant.level-2 .stem {
+    height: 55px;
+}
+
+.plant.level-2 .leaf.left {
+    opacity: 1;
+}
+
+.plant.level-3 .stem {
+    height: 75px;
+}
+
+.plant.level-3 .leaf {
+    opacity: 1;
+}
+
+.plant.level-4 .stem {
+    height: 95px;
+}
+
+.plant.level-4 .leaf {
+    opacity: 1;
+}
+
+
+/* FLOWER */
+
+.flower {
+    position: absolute;
+
+    left: 34px;
+    bottom: 135px;
+
+    width: 42px;
+    height: 42px;
+
+    opacity: 0;
+
+    transform: scale(0);
+
+    transition:
+        all 1s ease;
+}
+
+.petal {
+    position: absolute;
+
+    width: 19px;
+    height: 25px;
+
+    left: 11px;
+    top: 8px;
+
+    background: #f28fa9;
+
+    border-radius: 50%;
+}
+
+.petal:nth-child(1) {
+    transform: translateY(-9px);
+}
+
+.petal:nth-child(2) {
+    transform:
+        rotate(72deg)
+        translateY(-9px);
+}
+
+.petal:nth-child(3) {
+    transform:
+        rotate(144deg)
+        translateY(-9px);
+}
+
+.petal:nth-child(4) {
+    transform:
+        rotate(216deg)
+        translateY(-9px);
+}
+
+.petal:nth-child(5) {
+    transform:
+        rotate(288deg)
+        translateY(-9px);
+}
+
+.flower-center {
+    position: absolute;
+
+    left: 14px;
+    top: 14px;
+
+    width: 15px;
+    height: 15px;
+
+    background: #f6c85f;
+
+    border-radius: 50%;
+}
+
+.plant.flowering .flower {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* =========================================================
+   CONFETTI
+========================================================= */
+
+#confetti-container {
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 900;
+
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+
+    top: -20px;
+
+    width: 9px;
+    height: 15px;
+
+    animation:
+        confettiFall
+        var(--duration)
+        linear
+        forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform:
+            translateY(-20px)
+            rotate(0deg);
+    }
+
+    100% {
+        transform:
+            translateY(110vh)
+            rotate(720deg);
+    }
+}
+
+
+/* =========================================================
+   PARTY
+========================================================= */
+
+body.party-mode .bulb {
+    animation:
+        discoBulb 0.65s infinite;
+}
+
+body.party-mode .bulb-glow {
+    animation:
+        discoGlow 0.65s infinite;
+}
+
+@keyframes discoBulb {
+    0% {
+        background: #ff3b6b;
+        box-shadow: 0 0 55px #ff3b6b;
+    }
+
+    16% {
+        background: #ff9f43;
+        box-shadow: 0 0 55px #ff9f43;
+    }
+
+    33% {
+        background: #ffe66d;
+        box-shadow: 0 0 55px #ffe66d;
+    }
+
+    50% {
+        background: #54e38e;
+        box-shadow: 0 0 55px #54e38e;
+    }
+
+    66% {
+        background: #55b7ff;
+        box-shadow: 0 0 55px #55b7ff;
+    }
+
+    83% {
+        background: #a66cff;
+        box-shadow: 0 0 55px #a66cff;
+    }
+
+    100% {
+        background: #ff3b6b;
+        box-shadow: 0 0 55px #ff3b6b;
+    }
+}
+
+@keyframes discoGlow {
+    0% {
+        background:
+            radial-gradient(
+                circle,
+                rgba(255,59,107,0.22),
+                transparent 70%
+            );
+    }
+
+    50% {
+        background:
+            radial-gradient(
+                circle,
+                rgba(84,227,142,0.22),
+                transparent 70%
+            );
+    }
+
+    100% {
+        background:
+            radial-gradient(
+                circle,
+                rgba(166,108,255,0.22),
+                transparent 70%
+            );
+    }
+}
+
+body.party-mode .star {
+    animation:
+        partyBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes partyBounce {
+    0%, 100% {
+        transform:
+            translate(-50%, -50%)
+            rotate(-3deg)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -53%)
+            rotate(3deg)
+            scale(1.08);
+    }
+}
+
+
+/* =========================================================
+   SCHEDULE
+========================================================= */
+
+.schedule-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(20,15,30,0.25);
+
+    backdrop-filter:
+        blur(3px);
+
+    z-index: 450;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.3s ease;
+}
+
+.schedule-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.schedule {
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.96);
+
+    width: 500px;
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    padding: 22px;
+
+    background:
+        rgba(255,255,255,0.9);
+
+    backdrop-filter:
+        blur(20px);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(30,20,40,0.25);
+
+    z-index: 500;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+.schedule.open {
+    opacity: 1;
+    pointer-events: auto;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+}
+
+.schedule h2 {
+    margin:
+        0 0 5px;
+
+    font-size: 20px;
+}
+
+.schedule-subtitle {
+    font-size: 12px;
+    opacity: 0.6;
+    margin-bottom: 18px;
+}
+
+.schedule-day {
+    padding:
+        12px 0;
+
+    border-bottom:
+        1px solid
+        rgba(80,60,90,0.12);
+}
+
+.schedule-date {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.event {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+}
+
+.event input {
+    width: 78px;
+    height: 28px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #f1edf3;
+
+    padding: 0 7px;
+}
+
+.event select {
+    height: 28px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #f1edf3;
+}
+
+.event-label {
+    font-size: 12px;
+    min-width: 62px;
+}
+
+.close-schedule {
+    width: 100%;
+    height: 34px;
+
+    margin-top: 15px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #786b87;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .clock {
+        left: 18px;
+        top: 18px;
+    }
+
+    .date {
+        font-size: 18px;
+    }
+
+    .menu-button {
+        right: 15px;
+        top: 15px;
+    }
+
+    .controls {
+        right: 15px;
+        top: 75px;
+    }
+
+    .schedule {
+        width: 92vw;
+    }
+
+    .plant {
+        left: 8%;
+        transform: scale(0.8);
+        transform-origin: bottom left;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="redFilter"></div>
+
+<div class="bulb-glow"></div>
+
+<!-- =====================================================
+     CEILING BULB
+===================================================== -->
+
+<div
+    class="ceiling-light"
+    id="ceilingLight"
+    title="Click me to change the light">
+
+```
+<div class="ceiling-wire"></div>
+
+<div class="ceiling-fixture"></div>
+
+<div
+    class="bulb"
+    id="bulb">
+</div>
+```
+
+</div>
+
+<!-- =====================================================
+     CLOCK
+===================================================== -->
+
+<div class="clock">
+
+```
+<div
+    class="date"
+    id="date">
+</div>
+
+<div
+    class="time"
+    id="time">
+</div>
+```
+
+</div>
+
+<!-- =====================================================
+     MENU BUTTON
+===================================================== -->
+
+<button
+ class="menu-button"
+ id="menuButton"
+ onclick="toggleControls()"
+ title="Star Boy controls">
+
+```
+⭐
+```
+
+</button>
+
+<!-- =====================================================
+     CONTROL PANEL
+===================================================== -->
+
+<div
+    class="controls"
+    id="controls">
+
+```
+<div class="controls-title">
+
+    <span>
+        ⭐ Star Boy
+    </span>
+
+    <button
+        class="pin-button"
+        id="pinButton"
+        onclick="togglePin()"
+        title="Pin menu">
+
+        📌
+
+    </button>
+
+</div>
+
+
+<div class="input-row">
+
+    <label>
+        Sleep
+    </label>
+
+    <input
+        id="sleep"
+        type="number"
+        min="0"
+        max="100"
+        value="85">
+
+</div>
+
+
+<div class="input-row">
+
+    <label>
+        Readiness
+    </label>
+
+    <input
+        id="readiness"
+        type="number"
+        min="0"
+        max="100"
+        value="85">
+
+</div>
+
+
+<div class="input-row">
+
+    <label>
+        Activity
+    </label>
+
+    <input
+        id="activity"
+        type="number"
+        min="0"
+        max="100"
+        value="85">
+
+</div>
+
+
+<button
+    class="control-button update-button"
+    onclick="updateStar()">
+
+    Update Star
+
+</button>
+
+
+<button
+    class="control-button sleep-button"
+    id="sleepButton"
+    onclick="toggleSleepMode()">
+
+    Sleep Mode
+
+</button>
+
+
+<button
+    class="control-button red-button"
+    id="redButton"
+    onclick="toggleRedMode()">
+
+    Red Mode
+
+</button>
+
+
+<button
+    class="control-button schedule-open"
+    onclick="toggleSchedule()">
+
+    Schedule
+
+</button>
+
+
+<!-- LIGHT COLORS -->
+
+<div class="light-controls">
+
+    <div class="light-title">
+        💡 Light
+    </div>
+
+    <div class="light-options">
+
+        <button
+            class="light-color selected"
+            data-color="#fff3cf"
+            data-glow="rgba(255,225,150,0.65)"
+            style="background:#fff3cf"
+            onclick="changeLight(this)">
+        </button>
+
+        <button
+            class="light-color"
+            data-color="#ffd6a0"
+            data-glow="rgba(255,170,80,0.65)"
+            style="background:#ffd6a0"
+            onclick="changeLight(this)">
+        </button>
+
+        <button
+            class="light-color"
+            data-color="#ff8c9c"
+            data-glow="rgba(255,70,100,0.65)"
+            style="background:#ff8c9c"
+            onclick="changeLight(this)">
+        </button>
+
+        <button
+            class="light-color"
+            data-color="#ff4f67"
+            data-glow="rgba(255,30,50,0.65)"
+            style="background:#ff4f67"
+            onclick="changeLight(this)">
+        </button>
+
+        <button
+            class="light-color"
+            data-color="#d995ff"
+            data-glow="rgba(180,80,255,0.65)"
+            style="background:#d995ff"
+            onclick="changeLight(this)">
+        </button>
+
+        <button
+            class="light-color"
+            data-color="#8ebeff"
+            data-glow="rgba(70,140,255,0.65)"
+            style="background:#8ebeff"
+            onclick="changeLight(this)">
+        </button>
+
+        <button
+            class="light-color"
+            data-color="#8ff0cf"
+            data-glow="rgba(80,230,170,0.65)"
+            style="background:#8ff0cf"
+            onclick="changeLight(this)">
+        </button>
+
+    </div>
+
+</div>
+
+
+<div
+    class="vibe"
+    id="vibe">
+
+    Ready ✨
+
+</div>
+```
+
+</div>
+
+<!-- =====================================================
+     MESSAGE
+===================================================== -->
+
+<div
+    class="message"
+    id="message">
+</div>
+
+<!-- =====================================================
+     PLANT
+===================================================== -->
+
+<div
+    class="plant level-1"
+    id="plant">
+
+```
+<div class="stem"></div>
+
+<div class="leaf left"></div>
+<div class="leaf right"></div>
+<div class="leaf top-left"></div>
+<div class="leaf top-right"></div>
+
+
+<div class="flower">
+
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+
+    <div class="flower-center"></div>
+
+</div>
+
+
+<div class="pot"></div>
+```
+
+</div>
+
+<!-- =====================================================
+     STAR BOY
+===================================================== -->
+
+<div
+    class="star ready-high"
+    id="star">
+
+```
+<div class="star-body"></div>
+
+
+<div class="face">
+
+
+    <div class="eye left-eye">
+
+        <div class="iris">
+
+            <div class="pupil"></div>
+
+        </div>
+
+        <div class="eyelid"></div>
+
+    </div>
+
+
+    <div class="eye right-eye">
+
+        <div class="iris">
+
+            <div class="pupil"></div>
+
+        </div>
+
+        <div class="eyelid"></div>
+
+    </div>
+
+
+    <div class="brow left-brow"></div>
+
+    <div class="brow right-brow"></div>
+
+
+    <div class="freckle f1"></div>
+    <div class="freckle f2"></div>
+    <div class="freckle f3"></div>
+    <div class="freckle f4"></div>
+
+    <div class="freckle f5"></div>
+    <div class="freckle f6"></div>
+    <div class="freckle f7"></div>
+    <div class="freckle f8"></div>
+
+
+    <div
+        class="mouth mouth-normal"
+        id="mouth">
+    </div>
+
+
+    <div
+        class="pearl-necklace"
+        id="pearlNecklace">
+
+        <div class="pearl p1"></div>
+        <div class="pearl p2"></div>
+        <div class="pearl p3"></div>
+        <div class="pearl p4"></div>
+        <div class="pearl p5"></div>
+        <div class="pearl p6"></div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<div id="confetti-container"></div>
+
+<!-- =====================================================
+     SCHEDULE
+===================================================== -->
+
+<div
+    class="schedule-overlay"
+    id="scheduleOverlay"
+    onclick="toggleSchedule()">
+</div>
+
+<div
+    class="schedule"
+    id="schedule">
+
+```
+<h2>
+    ⭐ Star Boy Schedule
+</h2>
+
+
+<div class="schedule-subtitle">
+
+    Your upcoming routine. Music can be connected later.
+
+</div>
+
+
+<div id="scheduleDays"></div>
+
+
+<button
+    class="close-schedule"
+    onclick="toggleSchedule()">
+
+    Done
+
+</button>
+```
+
+</div>
+
+<script>
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const star =
+    document.getElementById("star");
+
+const starBody =
+    document.querySelector(".star-body");
+
+const plant =
+    document.getElementById("plant");
+
+const vibe =
+    document.getElementById("vibe");
+
+const message =
+    document.getElementById("message");
+
+const mouth =
+    document.getElementById("mouth");
+
+const controls =
+    document.getElementById("controls");
+
+const menuButton =
+    document.getElementById("menuButton");
+
+const pinButton =
+    document.getElementById("pinButton");
+
+const sleepButton =
+    document.getElementById("sleepButton");
+
+const redButton =
+    document.getElementById("redButton");
+
+const schedule =
+    document.getElementById("schedule");
+
+const scheduleOverlay =
+    document.getElementById("scheduleOverlay");
+
+const bulb =
+    document.getElementById("bulb");
+
+const confettiContainer =
+    document.getElementById("confetti-container");
+
+const irises =
+    document.querySelectorAll(".iris");
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let sleepScore = 85;
+let readinessScore = 85;
+let activityScore = 85;
+
+let sleeping = false;
+let redMode = false;
+let partyMode = false;
+
+let menuPinned = false;
+
+let currentLightColor =
+    "#fff3cf";
+
+let currentLightGlow =
+    "rgba(255,225,150,0.65)";
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+function toggleControls() {
+
+    if (menuPinned) {
+        return;
+    }
+
+    const open =
+        controls.classList.toggle("open");
+
+    menuButton.classList.toggle(
+        "active",
+        open
+    );
+
+}
+
+
+/* Close menu when clicking outside */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            menuPinned ||
+            !controls.classList.contains("open")
+        ) {
+            return;
+        }
+
+        if (
+            !controls.contains(event.target) &&
+            !menuButton.contains(event.target)
+        ) {
+
+            controls.classList.remove(
+                "open"
+            );
+
+            menuButton.classList.remove(
+                "active"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PIN
+========================================================= */
+
+function togglePin() {
+
+    menuPinned =
+        !menuPinned;
+
+    pinButton.classList.toggle(
+        "active",
+        menuPinned
+    );
+
+
+    if (menuPinned) {
+
+        controls.classList.add(
+            "open"
+        );
+
+        menuButton.classList.add(
+            "active"
+        );
+
+        showMessage(
+            "menu pinned 📌"
+        );
+
+    }
+
+    else {
+
+        showMessage(
+            "menu unpinned"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LIGHT COLOR
+========================================================= */
+
+function changeLight(button) {
+
+    if (partyMode) {
+
+        showMessage(
+            "the party light is in charge right now 🎉"
+        );
+
+        return;
+    }
+
+
+    currentLightColor =
+        button.dataset.color;
+
+    currentLightGlow =
+        button.dataset.glow;
+
+
+    bulb.style.background =
+        currentLightColor;
+
+    bulb.style.boxShadow =
+        `0 0 45px ${currentLightGlow}`;
+
+
+    document
+        .querySelectorAll(
+            ".light-color"
+        )
+        .forEach(
+            option => {
+
+                option.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    showMessage(
+        "lighting changed 💡"
+    );
+
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock() {
+
+    const now =
+        new Date();
+
+
+    document.getElementById(
+        "date"
+    ).textContent =
+        now.toLocaleDateString(
+            [],
+            {
+                weekday: "long",
+                month: "long",
+                day: "numeric"
+            }
+        );
+
+
+    document.getElementById(
+        "time"
+    ).textContent =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour: "numeric",
+                minute: "2-digit"
+            }
+        );
+
+
+    runDailySchedule(now);
+
+
+    if (
+        !sleeping &&
+        !partyMode
+    ) {
+
+        updateBackground(
+            now.getHours(),
+            now.getMinutes()
+        );
+
+    }
+
+}
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+function updateBackground(hour, minute) {
+
+    const minutes =
+        hour * 60 + minute;
+
+
+    if (
+        minutes >= 390 &&
+        minutes < 510
+    ) {
+
+        document.body.style.background =
+            "linear-gradient(to bottom, #f29a83 0%, #f7c19b 38%, #e6d9ce 100%)";
+
+        document.body.classList.remove(
+            "night-mode"
+        );
+
+    }
+
+    else if (
+        minutes >= 510 &&
+        minutes < 990
+    ) {
+
+        document.body.style.background =
+            "linear-gradient(to bottom, #83cfd1 0%, #c8e5df 55%, #f1e6d9 100%)";
+
+        document.body.classList.remove(
+            "night-mode"
+        );
+
+    }
+
+    else if (
+        minutes >= 990 &&
+        minutes < 1050
+    ) {
+
+        document.body.style.background =
+            "linear-gradient(to bottom, #ef956f 0%, #f2b47e 35%, #c49bb0 72%, #71647d 100%)";
+
+        document.body.classList.add(
+            "night-mode"
+        );
+
+    }
+
+    else {
+
+        document.body.style.background =
+            "linear-gradient(to bottom, #514b6c 0%, #63546f 45%, #302d4d 100%)";
+
+        document.body.classList.add(
+            "night-mode"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE STAR
+========================================================= */
+
+function updateStar() {
+
+    sleepScore =
+        clamp(
+            Number(
+                document.getElementById(
+                    "sleep"
+                ).value
+            )
+        );
+
+
+    readinessScore =
+        clamp(
+            Number(
+                document.getElementById(
+                    "readiness"
+                ).value
+            )
+        );
+
+
+    activityScore =
+        clamp(
+            Number(
+                document.getElementById(
+                    "activity"
+                ).value
+            )
+        );
+
+
+    updateSleep();
+    updateReadiness();
+    updateActivity();
+    updatePearls();
+    updatePartyMode();
+    updateMouthFromState();
+
+}
+
+
+/* =========================================================
+   CLAMP
+========================================================= */
+
+function clamp(value) {
+
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            value
+        )
+    );
+
+}
+
+
+/* =========================================================
+   SLEEP
+========================================================= */
+
+function updateSleep() {
+
+    star.classList.remove(
+        "sleep-good",
+        "sleep-normal",
+        "sleep-tired",
+        "sleep-very-tired"
+    );
+
+
+    if (
+        sleepScore >= 85
+    ) {
+
+        star.classList.add(
+            "sleep-good"
+        );
+
+        vibe.textContent =
+            "wide awake ✨";
+
+    }
+
+    else if (
+        sleepScore >= 70
+    ) {
+
+        star.classList.add(
+            "sleep-normal"
+        );
+
+        vibe.textContent =
+            "pretty rested";
+
+    }
+
+    else if (
+        sleepScore >= 50
+    ) {
+
+        star.classList.add(
+            "sleep-tired"
+        );
+
+        vibe.textContent =
+            "a little sleepy";
+
+    }
+
+    else {
+
+        star.classList.add(
+            "sleep-very-tired"
+        );
+
+        vibe.textContent =
+            "very sleepy 😴";
+
+    }
+
+}
+
+
+/* =========================================================
+   READINESS
+========================================================= */
+
+function updateReadiness() {
+
+    star.classList.remove(
+        "ready-high",
+        "ready-medium",
+        "ready-low",
+        "ready-very-low"
+    );
+
+
+    if (
+        readinessScore >= 80
+    ) {
+
+        star.classList.add(
+            "ready-high"
+        );
+
+    }
+
+    else if (
+        readinessScore >= 60
+    ) {
+
+        star.classList.add(
+            "ready-medium"
+        );
+
+    }
+
+    else if (
+        readinessScore >= 40
+    ) {
+
+        star.classList.add(
+            "ready-low"
+        );
+
+    }
+
+    else {
+
+        star.classList.add(
+            "ready-very-low"
+        );
+
+    }
+
+
+    const size =
+        225 +
+        readinessScore * 0.8;
+
+
+    star.style.width =
+        `${size}px`;
+
+    star.style.height =
+        `${size}px`;
+
+
+    const gravity =
+        (100 - readinessScore)
+        * 0.45;
+
+
+    star.style.top =
+        `calc(50% + ${gravity}px)`;
+
+
+    let color1;
+    let color2;
+
+
+    if (
+        readinessScore >= 80
+    ) {
+
+        color1 = "#e39bd8";
+        color2 = "#c576bd";
+
+    }
+
+    else if (
+        readinessScore >= 60
+    ) {
+
+        color1 = "#cf82c7";
+        color2 = "#aa62ae";
+
+    }
+
+    else if (
+        readinessScore >= 40
+    ) {
+
+        color1 = "#ac6bb0";
+        color2 = "#874e95";
+
+    }
+
+    else if (
+        readinessScore >= 20
+    ) {
+
+        color1 = "#8d579b";
+        color2 = "#693d79";
+
+    }
+
+    else {
+
+        color1 = "#70427e";
+        color2 = "#4e2d5d";
+
+    }
+
+
+    starBody.style.background =
+        `linear-gradient(
+            145deg,
+            ${color1},
+            ${color2}
+        )`;
+
+
+    document
+        .querySelectorAll(
+            ".eyelid"
+        )
+        .forEach(
+            eyelid => {
+
+                eyelid.style.background =
+                    color1;
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   ACTIVITY
+========================================================= */
+
+function updateActivity() {
+
+    plant.classList.remove(
+        "level-1",
+        "level-2",
+        "level-3",
+        "level-4",
+        "flowering"
+    );
+
+
+    if (
+        activityScore < 20
+    ) {
+
+        plant.classList.add(
+            "level-1"
+        );
+
+    }
+
+    else if (
+        activityScore < 40
+    ) {
+
+        plant.classList.add(
+            "level-2"
+        );
+
+    }
+
+    else if (
+        activityScore < 60
+    ) {
+
+        plant.classList.add(
+            "level-3"
+        );
+
+    }
+
+    else if (
+        activityScore < 85
+    ) {
+
+        plant.classList.add(
+            "level-4"
+        );
+
+    }
+
+    else {
+
+        plant.classList.add(
+            "level-4",
+            "flowering"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PEARLS
+========================================================= */
+
+function updatePearls() {
+
+    const deservesPearls =
+        sleepScore >= 70 &&
+        readinessScore >= 70 &&
+        activityScore >= 70;
+
+
+    star.classList.toggle(
+        "pearl-mode",
+        deservesPearls
+    );
+
+}
+
+
+/* =========================================================
+   PARTY MODE
+========================================================= */
+
+function updatePartyMode() {
+
+    const shouldParty =
+        sleepScore === 100 &&
+        readinessScore === 100 &&
+        activityScore === 100;
+
+
+    if (
+        shouldParty &&
+        !partyMode
+    ) {
+
+        partyMode = true;
+
+        document.body.classList.add(
+            "party-mode"
+        );
+
+
+        vibe.textContent =
+            "PARTY STAR!!! 🎉⭐";
+
+
+        showMessage(
+            "100 / 100 / 100!!! LET'S PARTY!!! 🎉"
+        );
+
+
+        setMouth(
+            "laughing"
+        );
+
+
+        createConfetti(90);
+
+        startConfettiLoop();
+
+    }
+
+
+    else if (
+        !shouldParty &&
+        partyMode
+    ) {
+
+        partyMode = false;
+
+        document.body.classList.remove(
+            "party-mode"
+        );
+
+
+        stopConfettiLoop();
+
+
+        bulb.style.background =
+            currentLightColor;
+
+        bulb.style.boxShadow =
+            `0 0 45px ${currentLightGlow}`;
+
+
+        const now =
+            new Date();
+
+
+        updateBackground(
+            now.getHours(),
+            now.getMinutes()
+        );
+
+
+        updateMouthFromState();
+
+    }
+
+}
+
+
+/* =========================================================
+   CONFETTI
+========================================================= */
+
+let confettiLoop;
+
+
+function createConfetti(amount = 30) {
+
+    const colors = [
+        "#ff4f81",
+        "#ff9f43",
+        "#ffe66d",
+        "#54e38e",
+        "#55b7ff",
+        "#a66cff",
+        "#ffffff"
+    ];
+
+
+    for (
+        let i = 0;
+        i < amount;
+        i++
+    ) {
+
+        const piece =
+            document.createElement(
+                "div"
+            );
+
+
+        piece.className =
+            "confetti";
+
+
+        piece.style.left =
+            `${Math.random() * 100}%`;
+
+
+        piece.style.background =
+            colors[
+                Math.floor(
+                    Math.random() *
+                    colors.length
+                )
+            ];
+
+
+        piece.style.setProperty(
+            "--duration",
+            `${2.5 + Math.random() * 3}s`
+        );
+
+
+        piece.style.setProperty(
+            "--rotation",
+            `${Math.random() * 360}deg`
+        );
+
+
+        confettiContainer.appendChild(
+            piece
+        );
+
+
+        setTimeout(
+            () => piece.remove(),
+            6000
+        );
+
+    }
+
+}
+
+
+function startConfettiLoop() {
+
+    confettiLoop =
+        setInterval(
+            function() {
+
+                createConfetti(12);
+
+            },
+            900
+        );
+
+}
+
+
+function stopConfettiLoop() {
+
+    clearInterval(
+        confettiLoop
+    );
+
+    confettiContainer.innerHTML =
+        "";
+
+}
+
+
+/* =========================================================
+   MOUTH
+========================================================= */
+
+function setMouth(mood) {
+
+    mouth.classList.remove(
+        "mouth-normal",
+        "mouth-happy",
+        "mouth-laughing",
+        "mouth-shocked",
+        "mouth-sleepy",
+        "mouth-sad",
+        "mouth-curious"
+    );
+
+
+    mouth.classList.add(
+        `mouth-${mood}`
+    );
+
+}
+
+
+function updateMouthFromState() {
+
+    if (sleeping) {
+
+        setMouth("sleepy");
+        return;
+
+    }
+
+
+    if (partyMode) {
+
+        setMouth("laughing");
+        return;
+
+    }
+
+
+    if (sleepScore < 50) {
+
+        setMouth("sleepy");
+        return;
+
+    }
+
+
+    if (readinessScore < 35) {
+
+        setMouth("sad");
+        return;
+
+    }
+
+
+    if (
+        readinessScore >= 85 &&
+        sleepScore >= 80
+    ) {
+
+        setMouth("happy");
+        return;
+
+    }
+
+
+    setMouth("normal");
+
+}
+
+
+/* =========================================================
+   BLINK
+========================================================= */
+
+function blink() {
+
+    if (sleeping) {
+        return;
+    }
+
+
+    star.classList.add(
+        "blinking"
+    );
+
+
+    setTimeout(
+        function() {
+
+            star.classList.remove(
+                "blinking"
+            );
+
+        },
+        110
+    );
+
+}
+
+
+function scheduleBlink() {
+
+    const delay =
+        Math.random() *
+        4500 +
+        2200;
+
+
+    setTimeout(
+        function() {
+
+            blink();
+
+            scheduleBlink();
+
+        },
+        delay
+    );
+
+}
+
+scheduleBlink();
+
+
+/* =========================================================
+   EYES FOLLOW MOUSE
+========================================================= */
+
+document.addEventListener(
+    "mousemove",
+    function(event) {
+
+        if (sleeping) {
+            return;
+        }
+
+
+        const x =
+            (event.clientX /
+            window.innerWidth)
+            * 2 - 1;
+
+
+        const y =
+            (event.clientY /
+            window.innerHeight)
+            * 2 - 1;
+
+
+        const moveX =
+            x * 11;
+
+        const moveY =
+            y * 8;
+
+
+        irises.forEach(
+            iris => {
+
+                iris.style.transform =
+                    `translate(
+                        calc(-50% + ${moveX}px),
+                        calc(-50% + ${moveY}px)
+                    )`;
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SLEEP MODE
+========================================================= */
+
+function toggleSleepMode() {
+
+    sleeping =
+        !sleeping;
+
+
+    document.body.classList.toggle(
+        "sleep-mode",
+        sleeping
+    );
+
+
+    if (sleeping) {
+
+        sleepButton.textContent =
+            "Wake Star Boy";
+
+        sleepButton.classList.add(
+            "active"
+        );
+
+
+        vibe.textContent =
+            "zzz... 🌙";
+
+
+        showMessage(
+            "goodnight ⭐🌙"
+        );
+
+
+        setMouth(
+            "sleepy"
+        );
+
+    }
+
+    else {
+
+        sleepButton.textContent =
+            "Sleep Mode";
+
+        sleepButton.classList.remove(
+            "active"
+        );
+
+
+        const now =
+            new Date();
+
+
+        updateBackground(
+            now.getHours(),
+            now.getMinutes()
+        );
+
+
+        vibe.textContent =
+            "good morning ☀️";
+
+
+        showMessage(
+            "i'm awake ⭐"
+        );
+
+
+        updateMouthFromState();
+
+    }
+
+}
+
+
+/* =========================================================
+   RED MODE
+========================================================= */
+
+function toggleRedMode() {
+
+    redMode =
+        !redMode;
+
+
+    document.body.classList.toggle(
+        "red-mode",
+        redMode
+    );
+
+
+    if (redMode) {
+
+        redButton.textContent =
+            "Red Mode: ON";
+
+        redButton.classList.add(
+            "active"
+        );
+
+    }
+
+    else {
+
+        redButton.textContent =
+            "Red Mode";
+
+        redButton.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DAILY ROUTINE
+========================================================= */
+
+let lastMorningDate = "";
+let lastTiredDate = "";
+let lastSleepDate = "";
+
+
+function runDailySchedule(now) {
+
+    const hour =
+        now.getHours();
+
+    const minute =
+        now.getMinutes();
+
+
+    const today =
+        now.toISOString()
+        .split("T")[0];
+
+
+    if (
+        hour === 6 &&
+        minute === 0 &&
+        lastMorningDate !== today
+    ) {
+
+        lastMorningDate =
+            today;
+
+
+        if (sleeping) {
+            toggleSleepMode();
+        }
+
+
+        showMessage(
+            `Good morning ⭐ Today is ${now.toLocaleDateString(
+                [],
+                {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric"
+                }
+            )}!`
+        );
+
+
+        setMouth(
+            "happy"
+        );
+
+    }
+
+
+    if (
+        hour === 20 &&
+        minute === 30 &&
+        lastTiredDate !== today
+    ) {
+
+        lastTiredDate =
+            today;
+
+
+        if (!sleeping) {
+
+            showMessage(
+                "i'm starting to get tired... 🌙"
+            );
+
+
+            vibe.textContent =
+                "getting sleepy...";
+
+
+            setMouth(
+                "sleepy"
+            );
+
+        }
+
+    }
+
+
+    if (
+        hour === 22 &&
+        minute === 0 &&
+        lastSleepDate !== today
+    ) {
+
+        lastSleepDate =
+            today;
+
+
+        if (!sleeping) {
+
+            toggleSleepMode();
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   SCHEDULE
+========================================================= */
+
+function toggleSchedule() {
+
+    const open =
+        schedule.classList.toggle(
+            "open"
+        );
+
+
+    scheduleOverlay.classList.toggle(
+        "open",
+        open
+    );
+
+}
+
+
+function buildSchedule() {
+
+    const container =
+        document.getElementById(
+            "scheduleDays"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    const now =
+        new Date();
+
+
+    for (
+        let i = 0;
+        i < 4;
+        i++
+    ) {
+
+        const day =
+            new Date(now);
+
+
+        day.setDate(
+            now.getDate() + i
+        );
+
+
+        const dateText =
+            day.toLocaleDateString(
+                [],
+                {
+                    weekday: "long",
+                    month: "short",
+                    day: "numeric"
+                }
+            );
+
+
+        const dayDiv =
+            document.createElement(
+                "div"
+            );
+
+
+        dayDiv.className =
+            "schedule-day";
+
+
+        dayDiv.innerHTML = `
+
+            <div class="schedule-date">
+                ${dateText}
+            </div>
+
+            <div class="event">
+
+                <span class="event-label">
+                    Wake
+                </span>
+
+                <input
+                    type="time"
+                    value="06:00"
+                >
+
+                <select>
+                    <option>
+                        Morning
+                    </option>
+                </select>
+
+            </div>
+
+            <div class="event">
+
+                <span class="event-label">
+                    Tired
+                </span>
+
+                <input
+                    type="time"
+                    value="20:30"
+                >
+
+                <select>
+                    <option>
+                        Wind down
+                    </option>
+                </select>
+
+            </div>
+
+            <div class="event">
+
+                <span class="event-label">
+                    Sleep
+                </span>
+
+                <input
+                    type="time"
+                    value="22:00"
+                >
+
+                <select>
+                    <option>
+                        Sleep
+                    </option>
+                </select>
+
+            </div>
+
+            <div class="event">
+
+                <span class="event-label">
+                    Music
+                </span>
+
+                <input
+                    type="time"
+                    value="06:00"
+                >
+
+                <select>
+
+                    <option>
+                        Wake Music
+                    </option>
+
+                    <option>
+                        Sleep Music
+                    </option>
+
+                </select>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            dayDiv
+        );
+
+    }
+
+}
+
+buildSchedule();
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateStar();
+
+</script>
+
+</body>
+</html>
